@@ -103,7 +103,7 @@ feature_set_matching (core::ByteImage::Ptr image1, core::ByteImage::Ptr image2)
     /*FeatureSet 计算并存储一个视角的特征点，包含SIFT和SURF特征点 */
     sfm::FeatureSet::Options feature_set_opts;
     //feature_types设置为FEATURE_ALL表示检测SIFT和SURF两种特征点进行匹配
-    feature_set_opts.feature_types = sfm::FeatureSet::FEATURE_ALL;
+    feature_set_opts.feature_types = sfm::FeatureSet::FEATURE_SIFT;
     feature_set_opts.sift_opts.verbose_output = true;
     //feature_set_opts.surf_opts.verbose_output = true;
     //feature_set_opts.surf_opts.contrast_threshold = 500.0f;

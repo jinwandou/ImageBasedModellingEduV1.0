@@ -12,6 +12,7 @@
 #include <fstream>
 #include <sstream>
 #include <set>
+#include <assert.h>
 #include <util/system.h>
 #include <sfm/ransac_fundamental.h>
 #include "math/functions.h"
@@ -38,9 +39,10 @@ int  calc_ransac_iterations (double p,
                            int K,
                            double z = 0.99){
 
-    double prob_all_good = math::fastpow(p, K);
-    double num_iterations = std::log(1.0 - z)
-                            / std::log(1.0 - prob_all_good);
+
+    //double num_iterations = 0.0;
+    double num_iterations = log(1-z)/log(1-pow(p,K));
+    /* 计算迭代次数*/
     return static_cast<int>(math::round(num_iterations));
 
 }
@@ -162,11 +164,14 @@ std::vector<int> find_inliers(sfm::Correspondences2D2D const & matches
     const double squared_thresh = thresh* thresh;
 
     std::vector<int> inliers;
-    for(int i=0; i< matches.size(); i++){
-        double error = calc_sampson_distance(F, matches[i]);
-        if(error< squared_thresh){
+    /*todo 判断内点，并将内点索引保存到inliers中*/
+    for (std::size_t i = 0; i < matches.size(); ++i)
+    {
+        sfm::Correspondence2D2D const& p = matches[i];
+        double ret = calc_sampson_distance(F, matches[i]);
+        if(ret < squared_thresh)
             inliers.push_back(i);
-        }
+
     }
     return inliers;
 }
@@ -177,7 +182,7 @@ int main(int argc, char *argv[]){
 
     /** 加载归一化后的匹配对 */
     sfm::Correspondences2D2D corr_all;
-    std::ifstream in("./examples/task2/correspondences.txt");
+    std::ifstream in("../../../examples/task2/correspondences.txt");
     assert(in.is_open());
 
     std::string line, word;

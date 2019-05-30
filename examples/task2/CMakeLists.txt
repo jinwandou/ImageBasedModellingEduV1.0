@@ -1,4 +1,4 @@
-project(class2)
+project(class22)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-fPIC")
 
